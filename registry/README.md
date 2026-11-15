@@ -1,8 +1,9 @@
 # registry/
 
 `tests.csv` lists the 127 registered tests of the paper. A test is registered when its threshold was written in a
-dated log before the data it concerns were examined; thresholds were never changed afterwards. A verdict is `grey` when
-the result falls between the thresholds for yes and no.
+dated log before the test was run; the few tests that followed a first look at the data are flagged in the paper.
+Thresholds were never changed afterwards. A verdict is `grey` when the result falls between the thresholds for yes and
+no.
 
 | column | content |
 |---|---|
