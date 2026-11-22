@@ -62,6 +62,20 @@ def main():
             x[3], x[1], cell(x[4], "%.2f"), x[5], x[6], x[7], cell(x[8], "%d"), cell(x[9], "%.1f"),
             cell(x[10], "%.2f"), cell(x[11], "%.3f"), cell(x[12], "%.3f")))
     print(len(rows), "models")
+    full = [n for n in paper_models() if is_fixed(n) and depth(n) == bptt(n) and "_all" not in n]
+    near_mean = near_max = negative = 0
+    top = []
+    for n in full:
+        r = depth(n)
+        ex = np.array(load(n, "lyapunov.json")["lyap"])
+        near_mean += abs(brake_of(ex.mean(1), r)[0] - r) <= 1
+        near_max += abs(brake_of(ex.max(1), r)[0] - r) <= 1
+        negative += ex[r - 1].max() < 0
+        top.append(ex[r - 1].max())
+    print("fixed models trained through every loop: %d" % len(full))
+    print("  lowest mean log-stretch within one loop of r: %d of %d" % (near_mean, len(full)))
+    print("  lowest largest exponent within one loop of r: %d of %d" % (near_max, len(full)))
+    print("  largest exponent at r below zero: %d of %d (%.2f to %.2f)" % (negative, len(full), min(top), max(top)))
 
 
 if __name__ == "__main__":

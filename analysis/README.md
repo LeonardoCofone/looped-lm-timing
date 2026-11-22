@@ -14,7 +14,7 @@ three models of 472M parameters. The sets are defined in `common.py`.
 | file | prints | paper |
 |---|---|---|
 | `common.py` | | Loaders, model sets (`first_grid`, `CONTROL_GRID`, `CONTRACTION`, `SCALE`, `WAVE15`), and the shared definitions: contraction rate `q`, brake (lowest `lambda_k` within one loop of `r`, relative brake), loss minima past `r`, rise from `r` to `2r`, period from the phase `P_Theta`, rotation angle of a 2x2 Jacobian. |
-| `model_table.py` | LaTeX rows of the table of the 51 looped models | Table 3 (Appendix A) |
+| `model_table.py` | LaTeX rows of the table of the 51 looped models; the brake on the 31 fixed models trained through every loop, from the mean and from the largest of the 16 exponents | Table 3 (Appendix A), Section 4 |
 | `recipe_table.py` | LaTeX rows of the table of recipes at `r = 8` (`--all`: every recipe and depth) | Table 2 (Section 7) |
 | `tests_wave.py` | Oscillation, amplitude, period and contraction, collapse in `(k - r)/r`, distances between states | Table 6 |
 | `tests_decoder.py` | Loop decoder, its restarts, edits of the decoded loop index | Table 6 |
