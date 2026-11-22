@@ -26,12 +26,12 @@ def main():
     for sampling, b in (("fixed", "4"), ("poisson", "8")):
         run(["-m", "loopedlm.train", "--sampling", sampling, "--mean_rec", "4", "--mean_bptt", b, "--data", data,
              "--runs", runs] + SMALL)
-    for script in ("curves", "lyapunov", "step_geometry", "state_distance", "scaled_update"):
+    for script in ("curves", "lyapunov", "step_geometry", "state_distance", "scaled_update", "loss_tokens"):
         run(["-m", "measure." + script, "--runs", runs, "--data", data, "--out", out])
     for name in sorted(os.listdir(out)):
         files = sorted(os.listdir(os.path.join(out, name)))
         print(name, files)
-        assert len(files) == 6, files
+        assert len(files) == 8, files
     print("smoke test passed")
 
 

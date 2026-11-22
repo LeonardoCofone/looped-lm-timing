@@ -180,26 +180,48 @@ def fig_wave():
     check_bounds(fig, "fig_wave")
 
 
-def fig_relax():
-    fig, axs = plt.subplots(1, 2, figsize=(6.5, 2.2), constrained_layout=True)
-    for ax, key in zip(axs, ("r8", "r16")):
-        v = load(RUN[key], "plane_dynamics.json")
-        r = v["r"]
-        L = np.array(v["A"]["loss"])
-        H = np.array(v["C"]["relax_all_rp%d" % (2 * r)]["loss"])
-        k, kh = np.arange(len(L)), np.arange(len(H))
-        sel, selh = (k >= r // 2) & (k <= 4 * r), (kh >= r // 2) & (kh <= 4 * r)
-        ax.plot(k[sel] / r, L[sel] - L[r], color=DCOL[r], lw=1.6, label="step $d_k$ (trained)")
-        ax.plot(kh[selh] / r, H[selh] - L[r], color=INK, lw=1.4, ls="--", label="step $d_k/2$")
-        for x in (1, 2):
-            ax.axvline(x, color=MUTED, lw=0.6, alpha=0.6)
-        ax.axhline(0, color=MUTED, lw=0.6, ls=":")
-        ax.set_xlabel("loop $k/r$")
-        ax.set_title("(%s) fixed $r{=}%d$" % ("a" if key == "r8" else "b", r))
-        ax.set_xlim(0.5, 4)
-        ax.legend(loc="upper right")
-    axs[0].set_ylabel("$L_k - L_r$ (nats)")
-    check_bounds(fig, "fig_relax")
+def fig_intro():
+    fig, axs = plt.subplots(1, 2, figsize=(6.5, 2.35), constrained_layout=True)
+    fig.get_layout_engine().set(w_pad=0.12, wspace=0.08)
+    ax = axs[0]
+    names = {"fixed, through every loop": "loss at loop 8 only", "loss at every loop": "loss at every loop",
+             "Poisson, through every loop": "random depth, full gradient",
+             "Poisson, truncated to 4": "random depth, truncated"}
+    for label, runs, col, ls in RECIPES[1:] + RECIPES[:1]:
+        curves = [loss_curve(x) for x in runs]
+        n = min(len(L) for L in curves)
+        L = np.mean([x[:n] for x in curves], 0)
+        kk = np.arange(n)
+        m = (kk >= 6) & (kk <= 40)
+        every = label == "loss at every loop"
+        ax.plot(kk[m], L[m] - L[8], color=col, ls=":" if every else ls, lw=2.2 if every else 1.5, label=names[label])
+    ax.axvline(8, color=MUTED, lw=0.8, alpha=0.6)
+    ax.axhline(0, color=MUTED, lw=0.6)
+    ax.set_xlabel("loop $k$ (training depth $r=8$)")
+    ax.set_ylabel("$L_k - L_8$ (nats)")
+    ax.set_title("(a) loss past the training depth, by recipe")
+    ax.set_xlim(6, 40)
+    ax.set_ylim(-0.03, 0.32)
+    h, l = ax.get_legend_handles_labels()
+    ax.legend(h[::-1], l[::-1], loc="upper right", fontsize=6.2, handlelength=2.0)
+    ax = axs[1]
+    v = load(RUN["r8"], "plane_dynamics.json")
+    r = v["r"]
+    L = np.array(v["A"]["loss"])
+    H = np.array(v["C"]["relax_all_rp%d" % (2 * r)]["loss"])
+    k, kh = np.arange(len(L)), np.arange(len(H))
+    sel, selh = (k >= 6) & (k <= 40), (kh >= 6) & (kh <= 40)
+    ax.plot(k[sel], L[sel] - L[r], color=DCOL[r], lw=1.6, label="trained update")
+    ax.plot(kh[selh], H[selh] - L[r], color=INK, lw=1.4, ls="--", label="update scaled by $1/2$")
+    for x in (8, 16):
+        ax.axvline(x, color=MUTED, lw=0.6, alpha=0.6)
+    ax.axhline(0, color=MUTED, lw=0.6, ls=":")
+    ax.set_xlabel("loop $k$ (loss at loop 8 only, seed 0)")
+    ax.set_ylabel("$L_k - L_8$ (nats)")
+    ax.set_title("(b) a smaller update reaches loop 16")
+    ax.set_xlim(6, 40)
+    ax.legend(loc="upper right", fontsize=6.2)
+    check_bounds(fig, "fig_intro")
 
 
 def random_depth_panel(ax):
@@ -302,10 +324,10 @@ def fig_normality():
 
 def main():
     os.makedirs(OUT, exist_ok=True)
+    fig_intro()
     fig_profile()
     fig_brake()
     fig_wave()
-    fig_relax()
     fig_recipe()
     fig_temporal()
     fig_normality()

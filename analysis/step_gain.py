@@ -4,7 +4,7 @@ from analysis.common import depth, load
 
 MEASURED = ["fixed_r8_b8_s0", "fixed_r8_b8_s1", "fixed_r12_b12_s0", "fixed_r12_b12_s1", "fixed_r16_b16_s0",
             "fixed_r16_b16_s1", "fixed_r8_b8_D1500M_s0", "fixed_r16_b16_D1500M_s0", "fixed_r8_b8_d768_s0"]
-PRECISION = 1e-3   # J d_k with step 1e-3 |d_k| against 1e-4 |d_k|, median relative difference
+PRECISION = 1e-3
 
 
 def main():

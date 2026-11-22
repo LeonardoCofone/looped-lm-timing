@@ -1,18 +1,20 @@
-# Depth-Locked Dynamics in Looped Language Models
+# Where the Loss Is Applied Shapes the Timing of Looped Language Models
 
-Code, measurements and the test registry for the paper *Depth-Locked Dynamics in Looped Language Models*.
+Code, measurements and the test registry for the paper *Where the Loss Is Applied Shapes the Timing of Looped Language Models*.
 
-A looped language model applies one block of layers many times. When the loss sits at one fixed depth `r` and the
-gradient reaches every loop, the loop locks onto `r`:
+A looped language model applies one block of layers many times, so it can spend more computation at test time by
+running more loops. Models trained with the loss after a fixed number of loops `r` get worse past `r`, while models
+trained at a random number of loops do not. In our controls the difference follows which loops carry the loss:
 
-- **before `r`** it follows one step profile at every depth (the step shrinks as `r` grows);
-- **at `r`** it brakes (the Jacobian contracts most within one loop of `r`);
-- **past `r`** its step keeps turning in a plane, and the loss rises and falls with a period of about two training
-  depths.
+- with the loss only at loop `r` and the gradient through every loop, the model learns a trajectory timed to end at
+  `r`, where the loop contracts most strongly;
+- run past `r`, the state keeps moving on a slowly shrinking spiral, so the loss rises and, for `r = 6` to `12`, falls
+  again;
+- scaling every update by `r/r'` moves the end of this trajectory from loop `r` to loop `r'`, up to `2r`, without
+  retraining.
 
-Scaling every update by `r/r'` moves the landing to loop `r' = 1.5r` or `2r` without retraining. In the controls, none
-of these signatures appears when the depth is random or when the loss sits at every loop. These recipes also differ in
-contraction, which may mediate the effect.
+With a random depth or with the loss at every loop, none of this happens. These recipes also contract more strongly,
+which may contribute.
 
 ## Reproduce the paper from the included results
 
@@ -25,6 +27,14 @@ python -m analysis.model_table            # the table of the 51 looped models
 python -m analysis.recipe_table           # the table of recipes at r = 8
 python -m analysis.tests_controls         # registered tests on the controls
 python figures/make_figures.py            # the figures, in figures/out/
+```
+
+The proofs of the paper are checked in Lean 4, in `lean/`:
+
+```
+cd lean
+lake exe cache get
+lake build
 ```
 
 `registry/tests.csv` lists the 127 registered tests with the date their threshold was written, the outcome, the
@@ -60,8 +70,8 @@ CC BY-NC-SA 4.0, see [LICENSE](LICENSE).
 ## Citation
 
 ```
-@article{depthlocked2026,
-  title  = {Depth-Locked Dynamics in Looped Language Models},
+@article{losstiming2026,
+  title  = {Where the Loss Is Applied Shapes the Timing of Looped Language Models},
   author = {Anonymous},
   year   = {2026}
 }

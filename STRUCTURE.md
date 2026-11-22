@@ -1,7 +1,7 @@
 # Structure
 
 ```
-depth-locked-dynamics/
+looped-lm-timing/
 ├── loopedlm/      the looped model, data preparation, optimizer and training loop
 ├── measure/       one script per measurement; each reads trained runs and writes JSON into results/
 ├── results/       the measurements of every model in the paper (no checkpoints)
@@ -12,7 +12,8 @@ depth-locked-dynamics/
 ├── figures/       the figures of the paper, drawn from results/
 ├── registry/      the 127 registered tests: threshold date, outcome, verdict, script
 ├── configs/       the training command of every model
-└── tests/         an end-to-end smoke test on the CPU and the check of the phase estimator
+├── tests/         an end-to-end smoke test on the CPU and the check of the phase estimator
+└── lean/          the proofs of the paper, checked in Lean 4
 ```
 
 ## How the parts connect
