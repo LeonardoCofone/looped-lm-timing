@@ -1,0 +1,16 @@
+{
+ "r2": "fixed_r2_b2_s0",
+ "r8s0": "fixed_r8_b8_s0",
+ "r8s2": "fixed_r8_b8_s2",
+ "r16": "fixed_r16_b16_s0",
+ "r8b4": "fixed_r8_b4_s0",
+ "dec09": "fixed_r8_b8_dec0.9_s0",
+ "pb32": "poisson_r8_b32_s0",
+ "r4": "fixed_r4_b4_s0",
+ "r8s1": "fixed_r8_b8_s1",
+ "r12": "fixed_r12_b12_s0",
+ "r24": "fixed_r24_b24_s0",
+ "r12b8": "fixed_r12_b8_s0",
+ "all": "fixed_r8_b8_all_s0",
+ "pb4": "poisson_r8_b4_s0"
+}

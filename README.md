@@ -37,7 +37,7 @@ lake exe cache get
 lake build
 ```
 
-`registry/tests.csv` lists the 127 registered tests with the date their threshold was written, the outcome, the
+`registry/tests.csv` lists the 146 registered tests with the date their threshold was written, the outcome, the
 verdict and the script that recomputes it. Run any script in `analysis/` to see its tests.
 
 ## Retrain and remeasure

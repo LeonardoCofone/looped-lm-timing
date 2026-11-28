@@ -17,7 +17,7 @@ def measure(m, cfg, dev, a):
     r = cfg["mean_rec"]
     K = 4 * r
     fit = a.fitK or r
-    x = sequences(a.data)[0][: a.seqs, : a.T].to(dev)
+    x = sequences(a.data)[0][a.first: a.first + a.seqs, : a.T].to(dev)
     e = m.embed(x)
     s = initial_state(m, e)
     Z, step, prev = [], [], s

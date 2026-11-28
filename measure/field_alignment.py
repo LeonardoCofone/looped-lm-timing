@@ -77,11 +77,12 @@ def main():
     ap.add_argument("--set", default="base", choices=["base", "grid"], help="grid = depths 6..24, two seeds")
     ap.add_argument("--seqs", type=int, default=8)
     ap.add_argument("--T", type=int, default=512)
+    ap.add_argument("--first", type=int, default=0, help="index of the first sequence taken from the pool of 64")
     a = ap.parse_args()
     models, cross, same = (BASE, BASE_CROSS, BASE_SAME) if a.set == "base" else (GRID, GRID_CROSS, GRID_SAME)
     dev = device()
     xb, yb = sequences(a.data)
-    x, y = xb[: a.seqs, : a.T].to(dev), yb[: a.seqs, : a.T].to(dev)
+    x, y = xb[a.first: a.first + a.seqs, : a.T].to(dev), yb[a.first: a.first + a.seqs, : a.T].to(dev)
     data, depth, info = {}, {}, {}
     for key, name in models.items():
         run = os.path.join(a.runs, name)

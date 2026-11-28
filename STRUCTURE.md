@@ -7,10 +7,11 @@ looped-lm-timing/
 ├── results/       the measurements of every model in the paper (no checkpoints)
 │   ├── models/          one folder per trained model
 │   ├── public/          the public looped models (Parcae, Huginn, Ouro)
+│   ├── november/        outputs of eight tests of 1 November 2026 measured outside this code
 │   └── field_alignment/ the alignment of the loop field across models
 ├── analysis/      the tables and the registered tests, recomputed from results/
 ├── figures/       the figures of the paper, drawn from results/
-├── registry/      the 127 registered tests: threshold date, outcome, verdict, script
+├── registry/      the 146 registered tests: threshold date, outcome, verdict, script
 ├── configs/       the training command of every model
 ├── tests/         an end-to-end smoke test on the CPU and the check of the phase estimator
 └── lean/          the proofs of the paper, checked in Lean 4

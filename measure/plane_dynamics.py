@@ -236,8 +236,8 @@ def measure(m, cfg, dev, a):
     r = cfg["mean_rec"]
     K = max(16 * r, 128)
     xb, yb = sequences(a.data)
-    x, y = xb[: a.seqs, : a.T].to(dev), yb[: a.seqs, : a.T].to(dev)
-    xj = xb[: a.jac_seqs, : a.jac_T].to(dev)
+    x, y = xb[a.first: a.first + a.seqs, : a.T].to(dev), yb[a.first: a.first + a.seqs, : a.T].to(dev)
+    xj = xb[a.first: a.first + a.jac_seqs, : a.jac_T].to(dev)
     res, tok = {"r": r, "K": K, "seqs": a.seqs, "T": a.T}, {}
     e = m.embed(x)
     s0 = initial_state(m, e)

@@ -59,7 +59,7 @@ def measure(m, cfg, dev, a):
     r = cfg["mean_rec"]
     K, k0, shift = 4 * r, max(1, r // 2), max(1, r // 4)
     xb, yb = sequences(a.data)
-    x, y = xb[: a.seqs, : a.T].to(dev), yb[: a.seqs, : a.T].to(dev)
+    x, y = xb[a.first: a.first + a.seqs, : a.T].to(dev), yb[a.first: a.first + a.seqs, : a.T].to(dev)
     B = x.shape[0]
     e_train, e_test, y_test = m.embed(x[: B // 2]), m.embed(x[B // 2:]), y[B // 2:]
     W, mu, ym, r2 = fit_decoder(m, e_train, r, a.sub, a.lam)

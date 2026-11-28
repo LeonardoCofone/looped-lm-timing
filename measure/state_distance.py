@@ -10,7 +10,7 @@ def measure(m, cfg, dev, a):
     r = cfg["mean_rec"]
     K = min(8 * r, a.Kmax)
     xb, yb = sequences(a.data)
-    x, y = xb[: a.seqs, : a.T].to(dev), yb[: a.seqs, : a.T].to(dev)
+    x, y = xb[a.first: a.first + a.seqs, : a.T].to(dev), yb[a.first: a.first + a.seqs, : a.T].to(dev)
     e = m.embed(x)
     s = initial_state(m, e)
     S, losses, lens = [], [], []

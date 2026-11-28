@@ -28,10 +28,17 @@ def main():
              "--runs", runs] + SMALL)
     for script in ("curves", "lyapunov", "step_geometry", "state_distance", "scaled_update", "loss_tokens"):
         run(["-m", "measure." + script, "--runs", runs, "--data", data, "--out", out])
+    for script in ("time_scale", "predictions", "update_gauge"):
+        run(["-m", "measure." + script, "--runs", runs, "--data", data, "--out", out, "--seqs", "2", "--T", "128",
+             "--stride", "10000"])
+    run(["-m", "measure.lyapunov", "--runs", runs, "--data", data, "--out", os.path.join(work, "first"), "--first", "8"])
     for name in sorted(os.listdir(out)):
         files = sorted(os.listdir(os.path.join(out, name)))
         print(name, files)
-        assert len(files) == 8, files
+        assert len(files) == 11, files
+    a = json.load(open(os.path.join(out, name, "lyapunov.json")))["lyap"]
+    b = json.load(open(os.path.join(work, "first", name, "lyapunov.json")))["lyap"]
+    assert a != b, "--first 8 must read other sequences"
     print("smoke test passed")
 
 

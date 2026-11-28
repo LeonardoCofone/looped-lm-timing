@@ -6,7 +6,7 @@ from measure.common import base_parser, for_each_run, initial_state, lyapunov, s
 @torch.no_grad()
 def measure(m, cfg, dev, a):
     r = cfg["mean_rec"]
-    x = sequences(a.data)[0][: a.seqs, : a.T].to(dev)
+    x = sequences(a.data)[0][a.first: a.first + a.seqs, : a.T].to(dev)
     e = m.embed(x)
     K = max(2 * r, r + 8)
     steps = [lambda s: m.step(s, e)] * K

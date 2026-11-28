@@ -21,6 +21,7 @@ def base_parser():
     ap.add_argument("--out", default="results/models", help="one subfolder per run is written here")
     ap.add_argument("--only", default="", help="measure only runs whose name contains this string")
     ap.add_argument("--redo", type=int, default=0, help="1 = overwrite existing outputs")
+    ap.add_argument("--first", type=int, default=0, help="index of the first sequence taken from the pool of 64")
     return ap
 
 

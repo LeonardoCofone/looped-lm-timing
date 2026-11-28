@@ -58,7 +58,7 @@ id,table,registered,test,outcome,verdict,script,output
 57,7,2026-10-02,"Non-normality follows the log-stretch loop by loop (Spearman >=0.6, >=70%)",6 of 15,NO,analysis/tests_landing.py,non-normality follows the log-stretch loop by loop
 58,7,2026-10-02,Period from the phase on 8 sequences within 15% of 4 sequences (>=80%),22 of 22,YES,analysis/tests_plane_dynamics.py,period from the phase on 8 sequences
 59,7,2026-10-02,"Period from the slowest mode of the Jacobian at the fixed point (+-30%, >=70%)",7 of 22,NO,analysis/tests_plane_dynamics.py,period from the slowest mode
-60,7,2026-10-02,Rotation angle at the fixed point collapses as r theta^* (CV <=0.2 and <= half),0.17 against 0.46,YES,analysis/tests_plane_dynamics.py,rotation angle at the fixed point collapses
+60,7,2026-10-02,Rotation angle at the fixed point collapses as r theta* (CV <=0.2 and <= half),0.17 against 0.46,YES,analysis/tests_plane_dynamics.py,rotation angle at the fixed point collapses
 61,7,2026-10-02,Switching off the MLP path halves the rotation angle at the fixed point (>=70%),22 of 24,YES,analysis/tests_plane_dynamics.py,switching off the MLP path
 62,7,2026-10-02,Angle removed with the MLP path collapses as r Delta theta (CV <=0.25),0.30,grey,analysis/tests_plane_dynamics.py,angle removed with the same path
 63,7,2026-10-02,"Update scaled by gamma after r stretches the period by 1/gamma (+-25%, >=70%)",16 of 22,YES,analysis/tests_plane_dynamics.py,update scaled by gamma after r stretches the period
@@ -126,3 +126,22 @@ id,table,registered,test,outcome,verdict,script,output
 125,8,2026-10-10,472M fixed: oscillation (2 of 2),1 of 2,grey,analysis/tests_scale.py,472M fixed: oscillation
 126,8,2026-10-10,"472M: rise in (r,2r] >=0.02 (fixed), <=0.02 (Poisson)","0.69, 0.48; <0.001",YES,analysis/tests_scale.py,"472M: rise in (r, 2r]"
 127,8,2026-10-10,472M fixed: two leading modes >=80% after r (2 of 2),"92%, 91%",YES,analysis/tests_scale.py,472M fixed: two leading modes
+128,9,2026-11-01,"Update scaled by c in [0.7,1.3]: parabolic minimum c* in [0.9,1.1] and Psi_r(1) within 0.001 of the grid minimum (fixed, r>=6, >=80%)",7 of 7; c*=0.993 to 1.010,YES,analysis/tests_time_scale.py,"c* in [0.9, 1.1] with Psi(1) within 0.001 of the minimum"
+129,9,2026-11-01,"Slope over curvature of the loss at r, A_r<=0.25 (>=80% of fixed models, r>=4), median 3x below r+-2",25 of 30; median 0.10 against 11.7,YES,analysis/tests_time_scale.py,A_r <= 0.25 in
+130,9,2026-11-01,"Curvature at r scales as the squared step (log-log slope in [0.8,1.2]; CV of the ratio across r<=0.35)","slope 1.07, CV 0.18 (18 models)",YES,analysis/tests_november.py,slope of log C_r on log n_r^2
+131,9,2026-11-01,"Loss of 8r loops scaled by 1/8 minus L_r falls with r (Spearman <=-0.8), to <=1/4 of its value at r=8 for r>=16",-0.98; 0.31,grey,analysis/tests_november.py,"Spearman(r, G)"
+132,9,2026-11-01,"Rise of the loss on each side of r over the KL between consecutive predictions in [0.75,1.25] (both sides, >=80% of 7 fixed)",7 of 7,YES,analysis/tests_november.py,"both in [0.75, 1.25]"
+133,9,2026-11-01,"After r: (l_r+j-l_r)/KL(p_r|| p_r+j) in [0.75,1.25], j<=2r (>=80% of pairs)",38 of 38; 0.83 to 1.03,YES,analysis/tests_november.py,"in [0.75, 1.25]: "
+134,9,2026-11-01,"Same ratio near one within a model, <=0.6 across seeds (>=5/6); mixing logits gains <=0.002 within, >=0.01 across",median |R-1| 0.04; 6 of 6; -0.0001 against 0.07,YES,analysis/tests_november.py,same model: median |R - 1|
+135,9,2026-11-01,"Averaged models: predictions over loops 1 to 8 form a martingale (ratio within 15% and KL additive, >=80% of pairs)",68%; 4% (median 1.6),NO,analysis/tests_november.py,averaged: |R - 1| <= 0.15
+136,9,2026-11-01,"Change of the final features after r: linear in h_r within the model, not across seeds (four conditions)",40 of 40; R^2 0.94 against 0.68; 6 of 6,YES,analysis/tests_november.py,|res_lin| <= 0.1 KL
+137,9,2026-11-01,"Specific to loops: in GPTs of 12 and 16 layers, the ratio after skipping inner layers in [0.75,1.25] in <50%",7 of 7 in range,NO,analysis/tests_november.py,"readable pairs: R in [0.75, 1.25]"
+138,9,2026-11-01,Derivative of the loss in the scale of each GPT branch and each loop step: token sum <=1/5 of the control across models,"0.011, 0.016 against 0.53",YES,analysis/tests_november.py,median ratio: GPT
+139,9,2026-11-01,"Ouro: mean loss over loops 1 to 4 lowest at c* in [0.9,1.1]; ratio after loop 4 in [0.75,1.25] (>=80%)","c*=1.22, 1.14; 67%",grey,analysis/tests_november.py,"R(4, k) in [0.75, 1.25]"
+140,9,2026-11-01,"GPTs, every branch scaled by c: c* in [0.9,1.1] and Psi(1) within 0.001 of the minimum, as in the loops (2 of 2)","0.99, 1.02; rise at c=1.3 only 0.01",YES,analysis/tests_november.py,c* of the scaled branches
+141,9,2026-11-01,Specific to loops: 8 substeps per GPT branch change the loss by <=0.005 (2 of 2),"4.5, 6.4 nats (loops about 0.03); threshold too easy",NO,analysis/tests_november.py,"substeps 1, 2, 4, 8"
+142,9,2026-11-01,"Halving the depth with a doubled update beats the model trained at r/2 (by >=0.015 nats, 2 of 4 pairs)",+0.84 to +2.30 nats; 0 of 4,NO,analysis/tests_november.py,"A, the shortened model beats"
+143,9,2026-11-01,"Same, at little cost: loss rise <=0.03 at r=24 and 16 (no if >=0.10)","2.25, 1.83",NO,analysis/tests_november.py,"B, Gd <= 0.03"
+144,9,2026-11-01,"Cost of the doubled update over that of the halved one in [2,6], as for a quadratic cost in the step (>=5 of 6)",0 of 6 (ratios 31 to 153),NO,analysis/tests_november.py,"C, Gd / Gu in [2, 6]"
+145,9,2026-11-01,Isolated negative real eigenvalue of the one-loop Jacobian at r/2 (fixed >=4 of 6; Poisson and loss at every loop <=1 of 3),6 of 6; 0 of 3,YES,analysis/tests_november.py,"of 6, averaged"
+146,9,2026-11-27,"Along the weights theta(c), G_r=Psi_r'(1)+N_r: shifts of the minimum |G_r|,|N_r|<=0.03 Psi_r''(1) (fixed, >=6 of 7; no if |N_r|>=0.10 Psi_r''(1) in >=4)",7 of 7; at most 0.013 and 0.016,YES,analysis/tests_november.py,|delta_G| and |delta_N| <= 0.03 in

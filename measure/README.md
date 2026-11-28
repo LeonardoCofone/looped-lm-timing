@@ -5,7 +5,8 @@ run in `--runs` (or those whose name contains `--only`), skips the runs it has a
 writes one file per run into `--out` (default `results/models/<run>/`). Some scripts measure only the runs they apply to
 (for example `r >= 4` for `plane_dynamics.py`). They take their sequences from the same pool of 64 validation sequences (`robustness.py`
 draws a new pool, `downstream.py` reads the task file) and start from the same initial state (seed 7), so measurements of different
-scripts refer to the same trajectory. `field_alignment.py` and the `public_*` scripts take their models explicitly.
+scripts refer to the same trajectory. `--first k` takes the sequences from position `k` of the pool instead of 0; with
+a separate `--out`, it repeats a measurement on disjoint sequences (Appendix A, sequence batches). `field_alignment.py` and the `public_*` scripts take their models explicitly.
 
 ```
 python -m measure.lyapunov --runs runs --data data
@@ -23,6 +24,10 @@ python -m measure.lyapunov --runs runs --data data
 | `temporal_edit.py` | `temporal_edit.json` | Moves the state at loop `r/2` along the decoder direction or along random directions of the same size, and records where the loss lands. |
 | `non_normality.py` | `non_normality.json`, `non_normality_coarse.json` | Departure from normality `||J J^T - J^T J|| / ||J^T J||` of the Jacobian of one loop, at every loop (`--dense 1`) or at five loops. |
 | `plane_dynamics.py` | `plane_dynamics.json`, `plane_dynamics_tokens.npz` | Trajectories to `max(16r, 128)` on 8 sequences; the 2x2 Jacobian in the plane of the motion, in full and with the attention output, the MLP output, the attention pattern or the normalisation held at their values; the update rescaled from the start or after `r`; the same paths frozen after `r`; the decay and the attention heads of the core. |
+| `time_scale.py` | `time_scale.json` | Loss after every loop up to `max(32, 2r)` with every update scaled by `c` from 0.5 to 3, on 16 sequences of 1024 tokens taken every 10^6 tokens of the validation set (the sequences of the registered test, not the pool of 64). |
+| `update_gauge.py` | `update_gauge.json` | On the same 16 sequences, central differences at `c = 1` of the loss at `r` along two paths: the update scaled by `c` (`dpsi`, the `Psi_r'(1)` of Proposition 1) and the weights scaled so that the linear part of the update scales exactly by `c` (decay `a -> 1 - c(1 - a)`, injection and output projections of the core times `c`; `G`). `N = G - dpsi` is the share of the nonlinear branches; `psi2` is the curvature in `c`. |
+| `ensembles.py` | `results/november/ensembles.json` | The prediction at `r` against those at `r + j` of the same model (`--self`) and against the prediction at `r` of another model (`--pairs a\|b`): losses, KL, the ratio `R` and the gain `G` of the best mix of the logits. Same 16 sequences. Reproduces the loop entries of the registered file exactly; the pairs with GPTs need the GPT checkpoints, which are not in this repository. |
+| `predictions.py` | `predictions.json` | On the same 16 sequences: loss after every loop, KL between the predictions of consecutive loops in both directions, KL from the prediction at `r` to every loop, and, for the first 16 loops, KL between every pair and the calibration error over 15 bins (these two on predictions stored in float16). |
 | `scaled_update.py` | `scaled_update.json` | `r'` loops with the update scaled by `r/r'` for `r' = r, 2r, 4r, 8r`, Richardson extrapolation, and the split of the step into injection and core. |
 | `doubled_update.py` | `doubled_update.json` | The update doubled after the first `k` trained loops (fixed-depth models with `r >= 8`). |
 | `field_alignment.py` | `results/field_alignment/` | Aligns the states of two models with an affine map and compares their rescaled steps at the same rescaled time. |

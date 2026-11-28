@@ -32,6 +32,8 @@ three models of 472M parameters. The sets are defined in `common.py`.
 | `tests_robustness_contraction.py` | New sequences and 32 directions, the contraction pilot, the damped recipes | Table 8 |
 | `tests_scale.py` | Two fixed models and one Poisson model of 472M parameters at `r = 8`: loss at `r`, brake, oscillation, rise from `r` to `2r`, planar steps | Table 8 (Section 10) |
 | `loss_uncertainty.py` | Loss at `r = 8` and at loop 16 by recipe; standard errors over sequences of `L_r`, of `L_(r+1) - L_r` and of the difference between fixed and Poisson models (descriptive) | Section 7, Appendix A |
+| `tests_time_scale.py` | The two tests on the scale of the update: loss at `r` with every update scaled by `c` (minimum `c*`, rise at `c = 0.7` and `1.3`, averaged recipes), and slope over curvature of the loss at `r` on the end-of-training curves and on `curves.json` | Section 8, Table 9 |
+| `tests_november.py` | The other sixteen tests of 1 November 2026: curvature at `r`, gain over the flow, loss rise against the KL between predictions (consecutive loops, after `r`, other seeds, martingale), linear part of the change of the features, GPT controls (skipped layers, branches scaled by `c`, substeps), stationarity per branch and per loop step, Ouro, halving and doubling the update, the negative eigenvalue at `r/2`; and T-GAUGE of 27 November 2026, the loss at `r` along the weights scaled by `c` against the update scaled by `c` (`update_gauge.json`) | Section 8, Table 9, Appendices C and E |
 | `step_gain.py` | Gain along the step after `r`: true, full Jacobian and planar restriction; share of the step in the plane (descriptive, not a registered test) | Appendix G |
 
 `registry/tests.csv` maps each registered test to the script that prints it.

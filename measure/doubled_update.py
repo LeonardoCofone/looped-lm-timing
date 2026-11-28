@@ -21,7 +21,7 @@ def run_variant(m, e, y, s0, k_start, K, keep):
 def measure(m, cfg, dev, a):
     r = cfg["mean_rec"]
     xb, yb = sequences(a.data)
-    x, y = xb[: a.seqs, : a.T].to(dev), yb[: a.seqs, : a.T].to(dev)
+    x, y = xb[a.first: a.first + a.seqs, : a.T].to(dev), yb[a.first: a.first + a.seqs, : a.T].to(dev)
     res = {"r": r, "seqs": a.seqs, "T": a.T}
     e = m.embed(x)
     s0 = initial_state(m, e)
